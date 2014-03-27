@@ -22,20 +22,23 @@
     
 }
 
-// Setup the beacon region
--(void)setupBeaconRegion {
+// Get the Apps Beacon UUID
+-( NSUUID* )getUUID {
+   return [ [ NSUUID alloc ] initWithUUIDString:UUID ];
+}
+
+// Get the Apps Beacon Region
+-( CLBeaconRegion * )getBeaconRegion {
     
-    NSUUID *uuid = [ [ NSUUID alloc ] initWithUUIDString:UUID ];
-    beaconRegion = [ [ CLBeaconRegion alloc ] initWithProximityUUID:uuid
-                                                                major:1
-                                                                minor:1
-                                                           identifier:@"com.adambulmer.test" ];
+    return [ [ CLBeaconRegion alloc ] initWithProximityUUID:[self getUUID] identifier:@"com.adambulmer.test" ];
     
 }
 
 
 // transmit beacon action. call this to start transmitting.
--( void )transmitBeacon {
+-( void )transmitBeacon:( NSInteger )major minor:( NSInteger )minor {
+    
+    CLBeaconRegion *beaconRegion = [ [  CLBeaconRegion alloc ] initWithProximityUUID:[self getUUID] major:major minor:minor identifier:@"com.adambulmer.test" ];
     
     beaconPeripheralData = [ beaconRegion peripheralDataWithMeasuredPower:nil ];
     peripheralManager = [ [ CBPeripheralManager alloc ] initWithDelegate:self queue:nil options:nil ];
@@ -65,25 +68,21 @@
     locationManager = [ [ CLLocationManager alloc] init ];
     locationManager.delegate = self;
     
-    // We create an NSUUID object. This string should match the one you created for the transmitter.
-    NSUUID *uuid = [ [ NSUUID alloc ] initWithUUIDString:UUID ];
-    beaconRegion = [ [ CLBeaconRegion alloc ] initWithProximityUUID:uuid identifier:@"com.adambulmer.test" ];
-    
-    [ locationManager startMonitoringForRegion:beaconRegion ];
+    [ locationManager startMonitoringForRegion:[self getBeaconRegion] ];
     
 }
 
 // Enter Beacon.
 -(void)locationManager:( CLLocationManager *)manager didEnterRegion:( CLRegion * )region {
     
-    [ locationManager startRangingBeaconsInRegion:beaconRegion ];
+    [ locationManager startRangingBeaconsInRegion:[self getBeaconRegion] ];
     
 }
 
 // Exit beacon.
 -(void)locationManager:( CLLocationManager *)manager didExitRegion:( CLRegion * )region {
     
-    [ locationManager stopRangingBeaconsInRegion:beaconRegion ];
+    [ locationManager stopRangingBeaconsInRegion:[self getBeaconRegion] ];
     
 }
 
@@ -101,19 +100,47 @@
     
     if ( beacon.proximity == CLProximityUnknown ) {
         
-        NSLog( @"Unknown Proximity" );
+        // Unknown Proximity
+        UIAlertView *alert = [[UIAlertView alloc]
+                              initWithTitle: @"Unknown"
+                              message: @""
+                              delegate: nil
+                              cancelButtonTitle:@"OK"
+                              otherButtonTitles:nil];
+        [alert show];
         
     } else if ( beacon.proximity == CLProximityImmediate ) {
         
-        NSLog( @"Immediate" );
+        // Close Proximity
+        UIAlertView *alert = [[UIAlertView alloc]
+                              initWithTitle: @"Close"
+                              message: @""
+                              delegate: nil
+                              cancelButtonTitle:@"OK"
+                              otherButtonTitles:nil];
+        [alert show];
         
     } else if ( beacon.proximity == CLProximityNear ) {
         
-        NSLog( @"Near" );
+        // Near Proximity
+        UIAlertView *alert = [[UIAlertView alloc]
+                              initWithTitle: @"Near"
+                              message: @""
+                              delegate: nil
+                              cancelButtonTitle:@"OK"
+                              otherButtonTitles:nil];
+        [alert show];
         
     } else if ( beacon.proximity == CLProximityFar ) {
         
-        NSLog( @"Far" );
+        // Far
+        UIAlertView *alert = [[UIAlertView alloc]
+                              initWithTitle: @"Far"
+                              message: @""
+                              delegate: nil
+                              cancelButtonTitle:@"OK"
+                              otherButtonTitles:nil];
+        [alert show];
         
     }
     

@@ -7,7 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AMBBeaconManager.h"
 
-@interface AMBViewController : UIViewController
+@interface AMBViewController : UIViewController {
+    
+    AMBBeaconManager *beaconManager;
+    
+    IBOutlet UILabel *in_region;
+    IBOutlet UITextField *minor;
+    
+}
+
+-(IBAction)transmit:(id)sender;
 
 @end

@@ -12,8 +12,6 @@
 
 @interface AMBBeaconManager : NSObject <CBPeripheralManagerDelegate, CLLocationManagerDelegate> {
     
-    // This property is used to define the settings (proximityUUID, major and minor) used for transmitting.
-    CLBeaconRegion *beaconRegion;
     
     // Create an NSDictionary property which contains the peripheral data of the beacon
     NSDictionary *beaconPeripheralData;
@@ -24,23 +22,14 @@
     // Property which is unique to application
     NSString *UUID;
     
-    // Property that you use to specify a related set of beacons, in this case it will always be the same
-    NSString *major;
-    
-    // Each beacon will have a different minor value.
-    NSString *minor;
-    
-    // Define which beacons we are looking for
-    CLBeaconRegion *LookForBeaconRegion;
-    
-    
     // Allowing the beacons to be found
     CLLocationManager *locationManager;
     
 }
 
--(void)setupBeaconRegion;
--(void)transmitBeacon;
+-( NSUUID* )getUUID;
+-( CLBeaconRegion * )getBeaconRegion;
+-(void)transmitBeacon:( NSInteger )major minor:( NSInteger )minor;
 -(void)findBeacon;
 
 @end
