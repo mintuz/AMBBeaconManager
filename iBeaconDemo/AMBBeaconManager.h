@@ -27,8 +27,12 @@
     
 }
 
+-(id)initWithUUID:( NSString* )uuid;
+-(void)setUUID:( NSString* )uuid;
+
 -( NSUUID* )getUUID;
 -( CLBeaconRegion * )getBeaconRegion;
+
 -(void)transmitBeacon:( NSInteger )major minor:( NSInteger )minor;
 -(void)findBeacon;
 

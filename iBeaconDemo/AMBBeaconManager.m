@@ -10,7 +10,7 @@
 
 @implementation AMBBeaconManager
 
--(id)init {
+-( id )init {
     
     self = [ super init ];
     
@@ -20,6 +20,24 @@
     
     return self;
     
+}
+
+// Init the beacon manager with a UUID
+-( id )initWithUUID:( NSString* )uuid {
+    
+    self = [ super init ];
+    
+    if ( self ) {
+        UUID = uuid;
+    }
+    
+    return self;
+    
+}
+
+// Set the Beacons UUID manually.
+-( void )setUUID:( NSString* )uuid {
+    UUID = uuid;
 }
 
 // Get the Apps Beacon UUID
