@@ -19,7 +19,61 @@
     [ super viewDidAppear:YES ];
 	
     beaconManager = [ [ AMBBeaconManager alloc ] init ];
-    [ beaconManager findBeacon ];
+    [ beaconManager findBeacon:^( id beacon ) {
+        
+         /*NSString *beaconUUID = beacon.proximityUUID.UUIDString;
+         NSString *beaconMajor = [ NSString stringWithFormat:@"%@", beacon.major ];
+         NSString *beaconMinor = [ NSString stringWithFormat:@"%@", beacon.minor ];
+         NSString *beaconAccuracy = [ NSString stringWithFormat:@"%f", beacon.accuracy ];
+         NSString *beaconRSSI = [ NSString stringWithFormat:@"%i", beacon.rssi ];
+         
+         if ( beacon.proximity == CLProximityUnknown ) {
+         
+         // Unknown Proximity
+         UIAlertView *alert = [[UIAlertView alloc]
+         initWithTitle: @"Unknown"
+         message: @""
+         delegate: nil
+         cancelButtonTitle:@"OK"
+         otherButtonTitles:nil];
+         [alert show];
+         
+         } else if ( beacon.proximity == CLProximityImmediate ) {
+         
+         // Close Proximity
+         UIAlertView *alert = [[UIAlertView alloc]
+         initWithTitle: @"Close"
+         message: @""
+         delegate: nil
+         cancelButtonTitle:@"OK"
+         otherButtonTitles:nil];
+         [alert show];
+         
+         } else if ( beacon.proximity == CLProximityNear ) {
+         
+         // Near Proximity
+         UIAlertView *alert = [[UIAlertView alloc]
+         initWithTitle: @"Near"
+         message: @""
+         delegate: nil
+         cancelButtonTitle:@"OK"
+         otherButtonTitles:nil];
+         [alert show];
+         
+         } else if ( beacon.proximity == CLProximityFar ) {
+         
+         // Far
+         UIAlertView *alert = [[UIAlertView alloc]
+         initWithTitle: @"Far"
+         message: @""
+         delegate: nil
+         cancelButtonTitle:@"OK"
+         otherButtonTitles:nil];
+         [alert show];
+         
+         }*/
+        
+    } ];
     
 }
 
@@ -37,7 +91,7 @@
                           delegate: nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    [alert show];
+    [ alert show ];
     
     [ beaconManager transmitBeacon:1 minor:[minor.text integerValue] ];
     

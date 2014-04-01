@@ -12,7 +12,6 @@
 
 @interface AMBBeaconManager : NSObject <CBPeripheralManagerDelegate, CLLocationManagerDelegate> {
     
-    
     // Create an NSDictionary property which contains the peripheral data of the beacon
     NSDictionary *beaconPeripheralData;
     
@@ -34,6 +33,6 @@
 -( CLBeaconRegion * )getBeaconRegion;
 
 -(void)transmitBeacon:( NSInteger )major minor:( NSInteger )minor;
--(void)findBeacon;
+-(void)findBeacon:( void (^)( id beacon ) )callback;
 
 @end

@@ -81,7 +81,7 @@
 }
 
 // Start monitoring for beacon.
--(void)findBeacon {
+-(void)findBeacon:( void (^)( id beacon ) )callback {
     
     locationManager = [ [ CLLocationManager alloc] init ];
     locationManager.delegate = self;
@@ -110,57 +110,7 @@
     CLBeacon *beacon = [ [ CLBeacon alloc ] init ];
     beacon = [ beacons lastObject ];
     
-    NSString *beaconUUID = beacon.proximityUUID.UUIDString;
-    NSString *beaconMajor = [ NSString stringWithFormat:@"%@", beacon.major ];
-    NSString *beaconMinor = [ NSString stringWithFormat:@"%@", beacon.minor ];
-    NSString *beaconAccuracy = [ NSString stringWithFormat:@"%f", beacon.accuracy ];
-    NSString *beaconRSSI = [ NSString stringWithFormat:@"%i", beacon.rssi ];
-    
-    if ( beacon.proximity == CLProximityUnknown ) {
-        
-        // Unknown Proximity
-        UIAlertView *alert = [[UIAlertView alloc]
-                              initWithTitle: @"Unknown"
-                              message: @""
-                              delegate: nil
-                              cancelButtonTitle:@"OK"
-                              otherButtonTitles:nil];
-        [alert show];
-        
-    } else if ( beacon.proximity == CLProximityImmediate ) {
-        
-        // Close Proximity
-        UIAlertView *alert = [[UIAlertView alloc]
-                              initWithTitle: @"Close"
-                              message: @""
-                              delegate: nil
-                              cancelButtonTitle:@"OK"
-                              otherButtonTitles:nil];
-        [alert show];
-        
-    } else if ( beacon.proximity == CLProximityNear ) {
-        
-        // Near Proximity
-        UIAlertView *alert = [[UIAlertView alloc]
-                              initWithTitle: @"Near"
-                              message: @""
-                              delegate: nil
-                              cancelButtonTitle:@"OK"
-                              otherButtonTitles:nil];
-        [alert show];
-        
-    } else if ( beacon.proximity == CLProximityFar ) {
-        
-        // Far
-        UIAlertView *alert = [[UIAlertView alloc]
-                              initWithTitle: @"Far"
-                              message: @""
-                              delegate: nil
-                              cancelButtonTitle:@"OK"
-                              otherButtonTitles:nil];
-        [alert show];
-        
-    }
+    NSLog( @"Need to use callback here" );
     
 }
 

@@ -47,6 +47,7 @@
                     </view>
                     <connections>
                         <outlet property="in_region" destination="iAK-Sp-o5i" id="k2S-Yi-IKX"/>
+                        <outlet property="minor" destination="dIg-zc-gk2" id="BgZ-Pz-9UQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
