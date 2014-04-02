@@ -15,7 +15,7 @@
     self = [ super init ];
     
     if ( self ) {
-        UUID = @"202C70B3-1072-42ED-B46F-A62796D4506E";
+        _UUID = @"202C70B3-1072-42ED-B46F-A62796D4506E";
     }
     
     return self;
@@ -23,12 +23,13 @@
 }
 
 // Init the beacon manager with a UUID
--( id )initWithUUID:( NSString* )uuid {
+-( id )initWithUUIDAndIdentifier:( NSString* )uuid identifier:( NSString * )identifier {
     
     self = [ super init ];
     
     if ( self ) {
-        UUID = uuid;
+        _UUID = uuid;
+        _identifier = identifier;
     }
     
     return self;
@@ -37,26 +38,42 @@
 
 // Set the Beacons UUID manually.
 -( void )setUUID:( NSString* )uuid {
-    UUID = uuid;
+    _UUID = uuid;
+}
+
+-( void )setIdentifier:( NSString* )identifier {
+    _identifier = identifier;
+}
+
+-( void )setMajor:( NSInteger )major {
+    _major = major;
+}
+
+-( void )setMinor:( NSInteger )minor {
+    _minor = minor;
 }
 
 // Get the Apps Beacon UUID
 -( NSUUID* )getUUID {
-   return [ [ NSUUID alloc ] initWithUUIDString:UUID ];
+   return [ [ NSUUID alloc ] initWithUUIDString:_UUID ];
 }
 
 // Get the Apps Beacon Region
 -( CLBeaconRegion * )getBeaconRegion {
-    
-    return [ [ CLBeaconRegion alloc ] initWithProximityUUID:[self getUUID] identifier:@"com.adambulmer.test" ];
-    
+    return [ [ CLBeaconRegion alloc ] initWithProximityUUID:[ self getUUID ] identifier:_identifier ];
 }
 
+-( void )transmitBeacon {
+    [ self transmitBeacon:_major minor:_minor ];
+}
 
-// transmit beacon action. call this to start transmitting.
+-( void )transmitBeacon:( NSInteger )major {
+    [ self transmitBeacon:major minor:_minor ];
+}
+
 -( void )transmitBeacon:( NSInteger )major minor:( NSInteger )minor {
     
-    CLBeaconRegion *beaconRegion = [ [  CLBeaconRegion alloc ] initWithProximityUUID:[self getUUID] major:major minor:minor identifier:@"com.adambulmer.test" ];
+    CLBeaconRegion *beaconRegion = [ [  CLBeaconRegion alloc ] initWithProximityUUID:[ self getUUID ] major:major minor:minor identifier:_identifier ];
     
     beaconPeripheralData = [ beaconRegion peripheralDataWithMeasuredPower:nil ];
     peripheralManager = [ [ CBPeripheralManager alloc ] initWithDelegate:self queue:nil options:nil ];
@@ -67,21 +84,17 @@
 -(void)peripheralManagerDidUpdateState:( CBPeripheralManager * )peripheral {
     
     if ( peripheral.state == CBPeripheralManagerStatePoweredOn ) {
-        
-        NSLog( @"Powered On" );
         [ peripheralManager startAdvertising:beaconPeripheralData ];
-        
     } else if ( peripheral.state == CBPeripheralManagerStatePoweredOff ) {
-        
-        NSLog(@"Powered Off");
         [ peripheralManager stopAdvertising ];
-        
     }
     
 }
 
 // Start monitoring for beacon.
--(void)findBeacon:( void (^)( id beacon ) )callback {
+-(void)findBeacon:( void (^)( CLBeacon* beacon ) )callback {
+    
+    _callback = callback;
     
     locationManager = [ [ CLLocationManager alloc] init ];
     locationManager.delegate = self;
@@ -92,16 +105,12 @@
 
 // Enter Beacon.
 -(void)locationManager:( CLLocationManager *)manager didEnterRegion:( CLRegion * )region {
-    
     [ locationManager startRangingBeaconsInRegion:[self getBeaconRegion] ];
-    
 }
 
 // Exit beacon.
 -(void)locationManager:( CLLocationManager *)manager didExitRegion:( CLRegion * )region {
-    
     [ locationManager stopRangingBeaconsInRegion:[self getBeaconRegion] ];
-    
 }
 
 // Do Stuff with the beacon.
@@ -110,7 +119,8 @@
     CLBeacon *beacon = [ [ CLBeacon alloc ] init ];
     beacon = [ beacons lastObject ];
     
-    NSLog( @"Need to use callback here" );
+    _callback( beacon );
+    
     
 }
 

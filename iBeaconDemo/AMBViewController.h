@@ -14,6 +14,7 @@
     AMBBeaconManager *beaconManager;
     
     IBOutlet UILabel *in_region;
+    IBOutlet UILabel *beacon_close;
     IBOutlet UITextField *minor;
     
 }

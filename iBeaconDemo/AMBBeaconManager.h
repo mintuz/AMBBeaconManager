@@ -12,6 +12,8 @@
 
 @interface AMBBeaconManager : NSObject <CBPeripheralManagerDelegate, CLLocationManagerDelegate> {
     
+    void (^_callback)(CLBeacon*);
+    
     // Create an NSDictionary property which contains the peripheral data of the beacon
     NSDictionary *beaconPeripheralData;
     
@@ -19,20 +21,30 @@
     CBPeripheralManager *peripheralManager;
     
     // Property which is unique to application
-    NSString *UUID;
+    NSString *_UUID;
+    NSString *_identifier;
+    NSInteger _major;
+    NSInteger _minor;
     
     // Allowing the beacons to be found
     CLLocationManager *locationManager;
     
 }
 
--(id)initWithUUID:( NSString* )uuid;
+-( id )initWithUUIDAndIdentifier:( NSString* )uuid identifier:( NSString * )identifier;
+
 -(void)setUUID:( NSString* )uuid;
+-(void)setIdentifier:( NSString* )identifier;
+-(void)setMajor:( NSInteger )major;
+-(void)setMinor:( NSInteger )minor;
 
 -( NSUUID* )getUUID;
 -( CLBeaconRegion * )getBeaconRegion;
 
+-(void)transmitBeacon;
+-(void)transmitBeacon:( NSInteger )major;
 -(void)transmitBeacon:( NSInteger )major minor:( NSInteger )minor;
--(void)findBeacon:( void (^)( id beacon ) )callback;
+
+-(void)findBeacon:( void (^)( CLBeacon* beacon ) )callback;
 
 @end
